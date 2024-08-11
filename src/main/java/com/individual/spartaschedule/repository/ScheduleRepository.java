@@ -46,4 +46,21 @@ public class ScheduleRepository {
         return dto;
     }
 
+    public Schedule ScheduleFindById(int id) {
+        // DB 조회
+        String sql = "SELECT * FROM PERSONALSCHEDULE_TBL WHERE sd_unique_number = ?";
+
+        return jdbcTemplate.query(sql, resultSet -> {
+            if (resultSet.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setSchedule(resultSet.getString("schedule"));
+                schedule.setSd_name(resultSet.getString("sd_name"));
+                schedule.setSd_regDate(resultSet.getDate("sd_regDate"));
+                schedule.setSd_modifyDate(resultSet.getDate("sd_modifyDate"));
+                return schedule;
+            } else {
+                return null;
+            }
+        }, id);
+    }
 }

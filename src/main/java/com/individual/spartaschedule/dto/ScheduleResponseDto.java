@@ -15,6 +15,7 @@ public class ScheduleResponseDto {
     private Date sd_modifyDate;
 
 
+    public ScheduleResponseDto(){}
 
     public ScheduleResponseDto(Schedule scheduleDto) {
         this.schedule = scheduleDto.getSchedule();

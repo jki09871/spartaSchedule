@@ -23,15 +23,28 @@ public class Schedule {
     private int sd_unique_number;
     private String schedule;
     private String sd_name;
+
     private String sd_password;
+
     private Date sd_regDate;
     private Date sd_modifyDate;
-
 
     public Schedule(ScheduleRequestDto scheduleDto) {
         this.schedule = scheduleDto.getSchedule();
         this.sd_name = scheduleDto.getSd_name();
         this.sd_password = scheduleDto.getSd_password();
 
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "sd_unique_number=" + sd_unique_number +
+                ", schedule='" + schedule + '\'' +
+                ", sd_name='" + sd_name + '\'' +
+                ", sd_password='" + sd_password + '\'' +
+                ", sd_regDate=" + sd_regDate +
+                ", sd_modifyDate=" + sd_modifyDate +
+                '}';
     }
 }

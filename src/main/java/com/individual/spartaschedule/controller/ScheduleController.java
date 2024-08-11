@@ -28,6 +28,10 @@ public class ScheduleController {
         return service.createSchedule(scheduleDto);
     }
 
-
+    @GetMapping("/reads/{id}")
+    public Schedule ScheduleFindById(@PathVariable int id){
+        ScheduleService service = new ScheduleService(jdbcTemplate);
+        return service.ScheduleFindById(id);
+    }
 
 }

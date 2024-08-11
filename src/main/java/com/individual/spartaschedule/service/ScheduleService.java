@@ -30,5 +30,9 @@ public class ScheduleService {
 
     }
 
+    public Schedule ScheduleFindById(int id) {
+        ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
 
+        return repository.ScheduleFindById(id);
+    }
 }
