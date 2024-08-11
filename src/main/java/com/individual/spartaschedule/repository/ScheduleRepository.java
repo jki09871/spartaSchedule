@@ -1,7 +1,5 @@
 package com.individual.spartaschedule.repository;
 
-import com.individual.spartaschedule.dto.ScheduleRequestDto;
-import com.individual.spartaschedule.dto.ScheduleResponseDto;
 import com.individual.spartaschedule.entity.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,6 +7,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -55,6 +55,7 @@ public class ScheduleRepository {
                 Schedule schedule = new Schedule();
                 schedule.setSchedule(resultSet.getString("schedule"));
                 schedule.setSd_name(resultSet.getString("sd_name"));
+                schedule.setSd_password(resultSet.getString("sd_password"));
                 schedule.setSd_regDate(resultSet.getDate("sd_regDate"));
                 schedule.setSd_modifyDate(resultSet.getDate("sd_modifyDate"));
                 return schedule;
@@ -62,5 +63,33 @@ public class ScheduleRepository {
                 return null;
             }
         }, id);
+    }
+
+    public List<Schedule> ScheduleFindByNameOrDate(String name, String modifyUpdate) {
+        // 빈 문자열을 null로 변환
+        if (name != null && name.trim().isEmpty()) {
+            name = null;
+        }
+        if (modifyUpdate != null && modifyUpdate.trim().isEmpty()) {
+            modifyUpdate = null;
+        }
+
+        // SQL 쿼리 작성
+        String sql = "SELECT * FROM PERSONALSCHEDULE_TBL " +
+                "WHERE (DATE(SD_MODIFYDATE) = ? OR ? IS NULL) " +
+                "AND (SD_NAME = ? OR ? IS NULL) " +
+                "ORDER BY SD_MODIFYDATE DESC";
+
+        // 쿼리 실행
+        return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> mapRowToSchedule(rs), modifyUpdate, modifyUpdate, name, name);
+    }
+
+    private Schedule mapRowToSchedule(ResultSet rs) throws SQLException {
+        Schedule schedule = new Schedule();
+        schedule.setSchedule(rs.getString("schedule"));
+        schedule.setSd_name(rs.getString("sd_name"));
+        schedule.setSd_regDate(rs.getDate("sd_regDate"));
+        schedule.setSd_modifyDate(rs.getDate("sd_modifyDate"));
+        return schedule;
     }
 }

@@ -24,7 +24,6 @@ public class ScheduleController {
     @PostMapping("/creates")
     public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto scheduleDto){
         ScheduleService service = new ScheduleService(jdbcTemplate);
-
         return service.createSchedule(scheduleDto);
     }
 
@@ -34,4 +33,9 @@ public class ScheduleController {
         return service.ScheduleFindById(id);
     }
 
+    @GetMapping("/search")
+    public List<Schedule> ScheduleFindByNameOrDate(@RequestParam(required = false) String name, @RequestParam(required = false) String modifyUpdate) {
+        ScheduleService service = new ScheduleService(jdbcTemplate);
+        return service.ScheduleFindByNameOrDate(name, modifyUpdate);
+    }
 }

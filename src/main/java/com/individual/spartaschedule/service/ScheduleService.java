@@ -22,9 +22,7 @@ public class ScheduleService {
         Schedule dto = new Schedule(scheduleDto);
         ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
         repository.scheduleSave(dto);
-
         ScheduleResponseDto responseDto = new ScheduleResponseDto(dto);
-
 
         return responseDto;
 
@@ -32,7 +30,11 @@ public class ScheduleService {
 
     public Schedule ScheduleFindById(int id) {
         ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
-
         return repository.ScheduleFindById(id);
+    }
+
+    public List<Schedule> ScheduleFindByNameOrDate(String name, String modifyUpdate) {
+        ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
+        return repository.ScheduleFindByNameOrDate(name, modifyUpdate);
     }
 }

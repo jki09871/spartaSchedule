@@ -10,8 +10,5 @@ class ScheduleApplicationTests {
 
     void contextLoads() {
 
-
-
     }
-
 }

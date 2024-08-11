@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 @SpringBootTest
 class ScheduleControllerTest {
     private final JdbcTemplate jdbcTemplate;
@@ -38,5 +40,14 @@ class ScheduleControllerTest {
         ScheduleService service = new ScheduleService(jdbcTemplate);
         Schedule schedule = service.ScheduleFindById(1);
         System.out.println("schedule = " + schedule);
+    }
+
+    @Test
+    @DisplayName("스케줄 상세정보")
+    void ScheduleFindByNameOrDate() {
+        ScheduleService service = new ScheduleService(jdbcTemplate);
+        List<Schedule> 홍길동 = service.ScheduleFindByNameOrDate("", "");
+        System.out.println("schedule = " + 홍길동);
+
     }
 }
