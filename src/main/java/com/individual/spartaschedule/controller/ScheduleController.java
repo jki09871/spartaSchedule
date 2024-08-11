@@ -39,10 +39,16 @@ public class ScheduleController {
         return service.scheduleFindByNameOrDate(name, modifyUpdate);
     }
 
-    @PutMapping("/modify")
-    public Schedule scheduleModify(int number, ScheduleRequestDto requestDto){
+    @PutMapping("/modify/{id}")
+    public Schedule scheduleModify(@PathVariable int id, ScheduleRequestDto requestDto){
         ScheduleService service = new ScheduleService(jdbcTemplate);
-        return service.scheduleModify(number, requestDto);
+        return service.scheduleModify(id, requestDto);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteScheduleByIdAndPassword(@RequestParam int id,@RequestParam String password){
+        ScheduleService service = new ScheduleService(jdbcTemplate);
+        service.deleteScheduleByIdAndPassword(id, password);
     }
 
 }

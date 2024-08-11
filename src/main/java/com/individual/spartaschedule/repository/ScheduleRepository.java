@@ -93,7 +93,7 @@ public class ScheduleRepository {
         }, modifyUpdate, modifyUpdate, name, name);
     }
 
-    public Schedule scheduleModify(int number, ScheduleRequestDto requestDto) {
+    public Schedule scheduleModify(int id, ScheduleRequestDto requestDto) {
         String sql = "UPDATE PERSONALSCHEDULE_TBL\n" +
                 "SET\n" +
                 "    SCHEDULE = ?,\n" +
@@ -102,7 +102,17 @@ public class ScheduleRepository {
                 "WHERE\n" +
                 "    SD_UNIQUE_NUMBER = ?\n" +
                 "  AND SD_PASSWORD = ?";
-        jdbcTemplate.update(sql, requestDto.getSchedule(), requestDto.getSd_name(), number, requestDto.getSd_password());
-        return scheduleFindById(number);
+        jdbcTemplate.update(sql, requestDto.getSchedule(), requestDto.getSd_name(), id, requestDto.getSd_password());
+        return scheduleFindById(id);
+    }
+
+    public void deleteScheduleByIdAndPassword(int id, String password) {
+        String sql = "DELETE FROM\n" +
+                "    PERSONALSCHEDULE_TBL\n" +
+                "WHERE\n" +
+                "        SD_UNIQUE_NUMBER = ? -- 일정의 고유 번호\n" +
+                "  AND SD_PASSWORD = ?; -- 비밀번호 확인";
+
+        jdbcTemplate.update(sql, id, password);
     }
 }

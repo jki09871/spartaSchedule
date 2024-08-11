@@ -45,12 +45,12 @@ class ScheduleControllerTest {
     @Test
     @DisplayName("스케줄 다중 상세정보")
     void scheduleFindByNameOrDate() {
-        ScheduleService service = new ScheduleService(jdbcTemplate);
-        List<Schedule> nameOrDateNull = service.scheduleFindByNameOrDate("", "");
+        ScheduleController controller = new ScheduleController(jdbcTemplate);
+        List<Schedule> nameOrDateNull = controller.scheduleFindByNameOrDate("", "");
         System.out.println("nameOrDateNull = " + nameOrDateNull);
-        List<Schedule> scheduleFindByName = service.scheduleFindByNameOrDate("김아무개", "");
+        List<Schedule> scheduleFindByName = controller.scheduleFindByNameOrDate("김아무개", "");
         System.out.println("scheduleFindByName = " + scheduleFindByName);
-        List<Schedule> scheduleFindByDate = service.scheduleFindByNameOrDate("", "2024-08-10");
+        List<Schedule> scheduleFindByDate = controller.scheduleFindByNameOrDate("", "2024-08-10");
         System.out.println("scheduleFindByDate = " + scheduleFindByDate);
 
     }
@@ -58,13 +58,19 @@ class ScheduleControllerTest {
     @Test
     @DisplayName("스케줄 변경")
     void scheduleModify() {
-        ScheduleService service = new ScheduleService(jdbcTemplate);
+        ScheduleController controller = new ScheduleController(jdbcTemplate);
         ScheduleRequestDto schedule = new ScheduleRequestDto();
         schedule.setSchedule("일정 변경");
         schedule.setSd_name("이름도 변경");
         schedule.setSd_password("1234");
-        Schedule schedules = service.scheduleModify(1, schedule);
+        Schedule schedules = controller.scheduleModify(1, schedule);
         System.out.println("schedules = " + schedules);
+    }
 
+    @Test
+    @DisplayName("스케줄 삭제")
+    void scheduleDelete(){
+        ScheduleController controller = new ScheduleController(jdbcTemplate);
+        controller.deleteScheduleByIdAndPassword(5, "a123");
     }
 }

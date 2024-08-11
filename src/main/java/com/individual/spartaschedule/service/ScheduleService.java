@@ -38,11 +38,21 @@ public class ScheduleService {
         return repository.scheduleFindByNameOrDate(name, modifyUpdate);
     }
 
-    public Schedule scheduleModify(int number, ScheduleRequestDto requestDto) {
+    public Schedule scheduleModify(int id, ScheduleRequestDto requestDto) {
         ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
-        Schedule schedule = repository.scheduleFindById(number);
+        Schedule schedule = repository.scheduleFindById(id);
         if (schedule != null){
-            return repository.scheduleModify(number, requestDto);
+            return repository.scheduleModify(id, requestDto);
+        } else {
+            throw new NullPointerException("해당하는 일정이 없습니다.");
+        }
+    }
+
+    public void deleteScheduleByIdAndPassword(int id, String password) {
+        ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
+        Schedule schedule = repository.scheduleFindById(id);
+        if (schedule != null){
+            repository.deleteScheduleByIdAndPassword(id, password);
         } else {
             throw new NullPointerException("해당하는 일정이 없습니다.");
         }
