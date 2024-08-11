@@ -27,15 +27,22 @@ public class ScheduleController {
         return service.createSchedule(scheduleDto);
     }
 
-    @GetMapping("/reads/{id}")
-    public Schedule ScheduleFindById(@PathVariable int id){
+    @GetMapping("/search/{id}")
+    public Schedule scheduleFindById(@PathVariable int id){
         ScheduleService service = new ScheduleService(jdbcTemplate);
-        return service.ScheduleFindById(id);
+        return service.scheduleFindById(id);
     }
 
     @GetMapping("/search")
-    public List<Schedule> ScheduleFindByNameOrDate(@RequestParam(required = false) String name, @RequestParam(required = false) String modifyUpdate) {
+    public List<Schedule> scheduleFindByNameOrDate(@RequestParam(required = false) String name, @RequestParam(required = false) String modifyUpdate) {
         ScheduleService service = new ScheduleService(jdbcTemplate);
-        return service.ScheduleFindByNameOrDate(name, modifyUpdate);
+        return service.scheduleFindByNameOrDate(name, modifyUpdate);
     }
+
+    @PutMapping("/modify")
+    public Schedule scheduleModify(int number, ScheduleRequestDto requestDto){
+        ScheduleService service = new ScheduleService(jdbcTemplate);
+        return service.scheduleModify(number, requestDto);
+    }
+
 }

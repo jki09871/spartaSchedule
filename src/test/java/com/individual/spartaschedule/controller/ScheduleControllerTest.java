@@ -38,16 +38,33 @@ class ScheduleControllerTest {
     @DisplayName("스케줄 상세정보")
     void scheduleFindById() {
         ScheduleService service = new ScheduleService(jdbcTemplate);
-        Schedule schedule = service.ScheduleFindById(1);
+        Schedule schedule = service.scheduleFindById(1);
         System.out.println("schedule = " + schedule);
     }
 
     @Test
-    @DisplayName("스케줄 상세정보")
-    void ScheduleFindByNameOrDate() {
+    @DisplayName("스케줄 다중 상세정보")
+    void scheduleFindByNameOrDate() {
         ScheduleService service = new ScheduleService(jdbcTemplate);
-        List<Schedule> 홍길동 = service.ScheduleFindByNameOrDate("", "");
-        System.out.println("schedule = " + 홍길동);
+        List<Schedule> nameOrDateNull = service.scheduleFindByNameOrDate("", "");
+        System.out.println("nameOrDateNull = " + nameOrDateNull);
+        List<Schedule> scheduleFindByName = service.scheduleFindByNameOrDate("김아무개", "");
+        System.out.println("scheduleFindByName = " + scheduleFindByName);
+        List<Schedule> scheduleFindByDate = service.scheduleFindByNameOrDate("", "2024-08-10");
+        System.out.println("scheduleFindByDate = " + scheduleFindByDate);
+
+    }
+
+    @Test
+    @DisplayName("스케줄 변경")
+    void scheduleModify() {
+        ScheduleService service = new ScheduleService(jdbcTemplate);
+        ScheduleRequestDto schedule = new ScheduleRequestDto();
+        schedule.setSchedule("일정 변경");
+        schedule.setSd_name("이름도 변경");
+        schedule.setSd_password("1234");
+        Schedule schedules = service.scheduleModify(1, schedule);
+        System.out.println("schedules = " + schedules);
 
     }
 }

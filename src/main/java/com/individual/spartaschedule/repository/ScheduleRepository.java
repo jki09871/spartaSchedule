@@ -1,5 +1,6 @@
 package com.individual.spartaschedule.repository;
 
+import com.individual.spartaschedule.dto.ScheduleRequestDto;
 import com.individual.spartaschedule.entity.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -46,7 +47,7 @@ public class ScheduleRepository {
         return dto;
     }
 
-    public Schedule ScheduleFindById(int id) {
+    public Schedule scheduleFindById(int id) {
         // DB 조회
         String sql = "SELECT * FROM PERSONALSCHEDULE_TBL WHERE sd_unique_number = ?";
 
@@ -65,7 +66,7 @@ public class ScheduleRepository {
         }, id);
     }
 
-    public List<Schedule> ScheduleFindByNameOrDate(String name, String modifyUpdate) {
+    public List<Schedule> scheduleFindByNameOrDate(String name, String modifyUpdate) {
         // 빈 문자열을 null로 변환
         if (name != null && name.trim().isEmpty()) {
             name = null;
@@ -81,15 +82,27 @@ public class ScheduleRepository {
                 "ORDER BY SD_MODIFYDATE DESC";
 
         // 쿼리 실행
-        return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> mapRowToSchedule(rs), modifyUpdate, modifyUpdate, name, name);
+        return jdbcTemplate.query(sql, (ResultSet rs, int rowNum) -> {
+            // ResultSet에서 Schedule 객체로 매핑
+            Schedule schedule = new Schedule();
+            schedule.setSchedule(rs.getString("schedule"));
+            schedule.setSd_name(rs.getString("sd_name"));
+            schedule.setSd_regDate(rs.getDate("sd_regDate"));
+            schedule.setSd_modifyDate(rs.getDate("sd_modifyDate"));
+            return schedule;
+        }, modifyUpdate, modifyUpdate, name, name);
     }
 
-    private Schedule mapRowToSchedule(ResultSet rs) throws SQLException {
-        Schedule schedule = new Schedule();
-        schedule.setSchedule(rs.getString("schedule"));
-        schedule.setSd_name(rs.getString("sd_name"));
-        schedule.setSd_regDate(rs.getDate("sd_regDate"));
-        schedule.setSd_modifyDate(rs.getDate("sd_modifyDate"));
-        return schedule;
+    public Schedule scheduleModify(int number, ScheduleRequestDto requestDto) {
+        String sql = "UPDATE PERSONALSCHEDULE_TBL\n" +
+                "SET\n" +
+                "    SCHEDULE = ?,\n" +
+                "    SD_NAME = ?,\n" +
+                "    SD_MODIFYDATE = NOW()\n" +
+                "WHERE\n" +
+                "    SD_UNIQUE_NUMBER = ?\n" +
+                "  AND SD_PASSWORD = ?";
+        jdbcTemplate.update(sql, requestDto.getSchedule(), requestDto.getSd_name(), number, requestDto.getSd_password());
+        return scheduleFindById(number);
     }
 }

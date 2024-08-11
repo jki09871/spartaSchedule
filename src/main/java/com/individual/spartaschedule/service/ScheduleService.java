@@ -28,13 +28,23 @@ public class ScheduleService {
 
     }
 
-    public Schedule ScheduleFindById(int id) {
+    public Schedule scheduleFindById(int id) {
         ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
-        return repository.ScheduleFindById(id);
+        return repository.scheduleFindById(id);
     }
 
-    public List<Schedule> ScheduleFindByNameOrDate(String name, String modifyUpdate) {
+    public List<Schedule> scheduleFindByNameOrDate(String name, String modifyUpdate) {
         ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
-        return repository.ScheduleFindByNameOrDate(name, modifyUpdate);
+        return repository.scheduleFindByNameOrDate(name, modifyUpdate);
+    }
+
+    public Schedule scheduleModify(int number, ScheduleRequestDto requestDto) {
+        ScheduleRepository repository = new ScheduleRepository(jdbcTemplate);
+        Schedule schedule = repository.scheduleFindById(number);
+        if (schedule != null){
+            return repository.scheduleModify(number, requestDto);
+        } else {
+            throw new NullPointerException("해당하는 일정이 없습니다.");
+        }
     }
 }
