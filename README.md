@@ -10,3 +10,8 @@ API명세서
 | **스케줄 조회**       | `GET`      | `/schedule/search`       | 요청 파라미터: 이름, 수정 날짜 | 다건 스케줄 정보   | `200: 정상조회`    |
 | **스케줄 수정**       | `PUT`      | `/schedule/modify/{id}`  | 요청 바디: 수정 정보      | 수정된 스케줄 정보       | `200: 정상수정`  |
 | **스케줄 삭제**       | `DELETE`   | `/schedule/delete`       | 요청 파라미터: 스케줄 ID, 패스워드 | -              | `200: 정상삭제`  |
+
+1. 일정 생성 API
+URL: /schedule/creates
+Method: POST
+Request Body:
