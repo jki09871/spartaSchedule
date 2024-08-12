@@ -17,5 +17,4 @@ public class ScheduleRequestDto {
         this.sd_password = scheduleDto.getSd_password();
     }
 
-
 }

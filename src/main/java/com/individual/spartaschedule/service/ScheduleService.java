@@ -4,7 +4,6 @@ import com.individual.spartaschedule.dto.ScheduleRequestDto;
 import com.individual.spartaschedule.dto.ScheduleResponseDto;
 import com.individual.spartaschedule.entity.Schedule;
 import com.individual.spartaschedule.repository.ScheduleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 public class ScheduleService {
 
     private final JdbcTemplate jdbcTemplate;
-    @Autowired
     public ScheduleService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
