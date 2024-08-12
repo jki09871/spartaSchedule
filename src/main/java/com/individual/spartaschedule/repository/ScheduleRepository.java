@@ -2,14 +2,12 @@ package com.individual.spartaschedule.repository;
 
 import com.individual.spartaschedule.dto.ScheduleRequestDto;
 import com.individual.spartaschedule.entity.Schedule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -17,7 +15,6 @@ public class ScheduleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public ScheduleRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -87,6 +84,7 @@ public class ScheduleRepository {
             Schedule schedule = new Schedule();
             schedule.setSchedule(rs.getString("schedule"));
             schedule.setSd_name(rs.getString("sd_name"));
+            schedule.setSd_password(rs.getString("sd_password"));
             schedule.setSd_regDate(rs.getDate("sd_regDate"));
             schedule.setSd_modifyDate(rs.getDate("sd_modifyDate"));
             return schedule;
@@ -101,7 +99,7 @@ public class ScheduleRepository {
                 "    SD_MODIFYDATE = NOW()\n" +
                 "WHERE\n" +
                 "    SD_UNIQUE_NUMBER = ?\n" +
-                "  AND SD_PASSWORD = ?";
+                "    AND SD_PASSWORD = ?";
         jdbcTemplate.update(sql, requestDto.getSchedule(), requestDto.getSd_name(), id, requestDto.getSd_password());
         return scheduleFindById(id);
     }
@@ -110,9 +108,8 @@ public class ScheduleRepository {
         String sql = "DELETE FROM\n" +
                 "    PERSONALSCHEDULE_TBL\n" +
                 "WHERE\n" +
-                "        SD_UNIQUE_NUMBER = ? -- 일정의 고유 번호\n" +
-                "  AND SD_PASSWORD = ?; -- 비밀번호 확인";
-
+                "    SD_UNIQUE_NUMBER = ?\n" +
+                "    AND SD_PASSWORD = ?";
         jdbcTemplate.update(sql, id, password);
     }
 }
