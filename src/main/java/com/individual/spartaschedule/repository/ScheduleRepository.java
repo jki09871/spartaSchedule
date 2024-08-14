@@ -46,7 +46,7 @@ public class ScheduleRepository {
 
     public Schedule scheduleFindById(int id) {
         // DB 조회
-        String sql = "SELECT * FROM PERSONALSCHEDULE_TBL WHERE sd_unique_number = ?";
+        String sql = "SELECT * FROM PERSONALSCHEDULE_TBL WHERE SD_UNIQUE_NUMBER = ?";
 
         return jdbcTemplate.query(sql, resultSet -> {
             if (resultSet.next()) {

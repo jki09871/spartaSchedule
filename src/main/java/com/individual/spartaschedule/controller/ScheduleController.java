@@ -38,7 +38,7 @@ public class ScheduleController {
     }
 
     @PutMapping("/modify/{id}")
-    public Schedule scheduleModify(@PathVariable int id, ScheduleRequestDto requestDto){
+    public Schedule scheduleModify(@PathVariable int id,@RequestBody ScheduleRequestDto requestDto){
         ScheduleService service = new ScheduleService(jdbcTemplate);
         return service.scheduleModify(id, requestDto);
     }
